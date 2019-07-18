@@ -20,6 +20,9 @@
         <activity
             android:name=".ui.GuideActivity"
             android:theme="@style/Theme.PageIndicatorDefaults" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:theme="@style/Theme.PageIndicatorDefaults" />
 
     </application>
 

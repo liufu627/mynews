@@ -26,5 +26,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation files('G:/Projects/mynews/commons-lang-2.6.jar')
+    implementation files('../commons-lang-2.6.jar')
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compile project(path: ':SlidingMenuLibrary')
 }

@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import alfredfliu.app.mynews.R;
 import alfredfliu.app.mynews.util.Config;
+import alfredfliu.app.mynews.util.MyLog;
 
 public class FlashActivity extends Activity {
     @Override
@@ -18,6 +19,17 @@ public class FlashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flash);
 
+        if (Config.hadFlash(FlashActivity.this, null)) {
+            if (!Config.clickedEnterButton(FlashActivity.this, null)) {
+                Intent intent = new Intent(FlashActivity.this, GuideActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Intent intent = new Intent(FlashActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
         RelativeLayout imageView =(RelativeLayout)findViewById(R.id.rl_flash);
         RotateAnimation rotateAnimation=new RotateAnimation(0,360,RotateAnimation.RELATIVE_TO_SELF ,0.5f,RotateAnimation.RELATIVE_TO_SELF,0.5f);
         rotateAnimation.setFillAfter(true);
@@ -48,13 +60,16 @@ public class FlashActivity extends Activity {
 
         @Override
         public void onAnimationEnd(Animation animation) {
-
-            if(!Config.hadFlash(FlashActivity.this,null)) {
+            if (!Config.clickedEnterButton(FlashActivity.this, null)) {
                 Intent intent = new Intent(FlashActivity.this, GuideActivity.class);
                 startActivity(intent);
-            }else{
-                Config.hadFlash(FlashActivity.this,true);
+                finish();
+            } else {
+                Intent intent = new Intent(FlashActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
+            Config.hadFlash(FlashActivity.this, true);
         }
 
         @Override
