@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#888888"
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="horizontal">
+
+     <RadioGroup android:id="@+id/radioGroup_bottom_main"
+         android:layout_width="match_parent" android:orientation="horizontal" android:layout_weight="1"
+         android:layout_height="match_parent">
+
+          <RadioButton
+              android:drawableTop="@drawable/home_selector"
+              android:text="主页" android:drawableTintMode="screen"
+              style="@style/RadioButton_ImageBottom" />
+
+          <RadioButton
+              android:drawableTop="@drawable/news_selector"
+              android:text="新闻"
+              style="@style/RadioButton_ImageBottom" />
+
+          <RadioButton
+              android:drawableTop="@drawable/emarket_selector"
+              android:text="商城"
+              style="@style/RadioButton_ImageBottom" />
+
+
+          <RadioButton
+              android:drawableTop="@drawable/shopcar_selector"
+              android:text="购物车"
+              style="@style/RadioButton_ImageBottom" />
+
+
+          <RadioButton
+              android:drawableTop="@drawable/setting_selector"
+              android:background="@null"
+              android:text="设置"
+              style="@style/RadioButton_ImageBottom" />
+
+          <!--<alfredfliu.app.mynews.ui.control.ToggleImageButton-->
+
+              <!--android:background="@null"-->
+              <!--app:offImage="@drawable/setting"-->
+              <!--app:onImage="@drawable/setting_press"-->
+              <!--android:text="设置"-->
+              <!--style="@style/RadioButton_ImageBottom" />-->
+
+     </RadioGroup>
+
+</LinearLayout>

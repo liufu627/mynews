@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/colorAccent">
+
+    <TextView
+        android:id="@+id/tv_Header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="主页面"
+        android:textSize="30sp" />
+
+    <ImageButton
+        android:id="@+id/ib_leftmenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="right"
+        android:background="@android:color/transparent"
+        android:paddingLeft="8dp"
+        android:src="@drawable/img_menu" />
+
+    <Button
+        android:id="@+id/btn_shopcar_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="left"
+        android:text="编辑"
+        android:textSize="20sp"
+        android:src="@drawable/img_menu" />
+
+
+</RelativeLayout>

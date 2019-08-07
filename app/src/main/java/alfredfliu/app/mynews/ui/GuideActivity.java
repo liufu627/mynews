@@ -2,12 +2,9 @@ package alfredfliu.app.mynews.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
-import android.support.constraint.solver.Cache;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -17,18 +14,17 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 
 import alfredfliu.app.mynews.R;
-import alfredfliu.app.mynews.ui.uiUtil.MyPagerAdapter;
+import alfredfliu.app.mynews.ui.Adaper.MyPagerAdapter;
 import alfredfliu.app.mynews.ui.uiUtil.MyPagerChangeListener;
 import alfredfliu.app.mynews.util.Config;
 import alfredfliu.app.mynews.util.DensityUtil;
-import alfredfliu.app.mynews.util.MyLog;
 
 public class GuideActivity extends Activity {
 
     private ViewPager viewPager;
     private  ImageView redpoint;
     private LinearLayout ll_point_group;
-    private ArrayList<ImageView> imageViewList;
+    private ArrayList<View> imageViewList;
     private ArrayList<Integer> idList;
 
     private Button btn_GotoMainUI;
@@ -83,7 +79,12 @@ public class GuideActivity extends Activity {
         @Override
         public void onGlobalLayout() {
             //执行不只一次
-            redpoint.getViewTreeObserver().removeGlobalOnLayoutListener(MyGlobalLayoutListener.this);
+//             if (Build.VERSION.SDK_INT < 16) {
+//                 redpoint.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//            } else {
+//                 redpoint.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//            }
+            redpoint.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
 //            间距  = 第1个点距离左边的距离 - 第0个点距离左边的距离
            Integer leftmax = ll_point_group.getChildAt(1).getLeft() - ll_point_group.getChildAt(0).getLeft();

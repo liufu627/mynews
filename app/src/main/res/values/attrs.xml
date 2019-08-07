@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ToggleImageButton">
+        <attr name="onImage" format="reference" />
+        <attr name="offImage" format="reference" />
+    </declare-styleable>
+</resources>

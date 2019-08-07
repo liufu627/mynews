@@ -2,12 +2,15 @@
 
 buildscript {
     repositories {
+        //maven{url "https://maven.aliyun.com"}
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.2'
+        //compile "com.viewpagerindicator:2.4.1"
+
         // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         //compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
         //implementation 'org.apache.commons:commons-lang3:3.9'
@@ -20,6 +23,7 @@ buildscript {
 
 allprojects {
     repositories {
+        //maven{url "https://maven.aliyun.com"}
         google()
         jcenter()
         

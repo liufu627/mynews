@@ -4,7 +4,7 @@ android {
     compileSdkVersion 24
     defaultConfig {
         applicationId "alfredfliu.app.mynews"
-        minSdkVersion 14
+        minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -26,8 +26,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation files('../commons-lang-2.6.jar')
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
-    compile project(path: ':SlidingMenuLibrary')
+    implementation project(path: ':SlidingMenuLibrary')
+    implementation files('../lib/gson-2.2.1.jar')
+    implementation files('../lib/volley.jar')
+    implementation files('../lib/commons-lang-2.6.jar')
+    implementation 'com.google.okhttp:okhttp:20120626'
 }
