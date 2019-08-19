@@ -20,7 +20,7 @@ public class BasePage {
         this.resID = resID;
         this.parentView = parentView;
 
-        Cache.getMainActivity().enableSlidingMenu(false);
+
     }
 
     public View getView() {

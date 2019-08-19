@@ -20,7 +20,7 @@ public class MyListViewAdapter extends BaseAdapter {
 
     @Getter
     @Setter
-    int checkedId;
+    int checkedIndex;
 
     int itemResourceId;
     int checkedItemResouceId;
@@ -28,7 +28,7 @@ public class MyListViewAdapter extends BaseAdapter {
     public MyListViewAdapter(ListView listView,List<String> srcList,int itemResourceId,int checkedItemResouceId) {
         this.context = listView.getContext();
         menuStrList = srcList;
-        checkedId = 0;
+        checkedIndex = 0;
 
         this.itemResourceId = itemResourceId;
         this.checkedItemResouceId = checkedItemResouceId;
@@ -55,8 +55,11 @@ public class MyListViewAdapter extends BaseAdapter {
         if( checkedItemResouceId >=0) {
             TextView chk_menuitem = (TextView)viewHolder.findViewById( checkedItemResouceId);
             chk_menuitem.setText(menuStrList.get(i));
-            chk_menuitem.setEnabled(checkedId == i);
+            chk_menuitem.setEnabled(checkedIndex == i);
+
         }
         return viewHolder.getView();
     }
+
+
 }

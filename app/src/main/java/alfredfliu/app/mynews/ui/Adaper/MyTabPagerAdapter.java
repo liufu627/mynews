@@ -16,18 +16,28 @@ import alfredfliu.app.mynews.ui.TabDetailPager;
 public class MyTabPagerAdapter extends PagerAdapter {
 
     private final Context contex;
+    //type:0
+    private List<View> viewList;
+
+    //type:1
     ArrayList<TabDetailPager> tabDetailPagers;
     List<String> titles;
 
-    public MyTabPagerAdapter(Context contex,  List<String> titles) {
+    public MyTabPagerAdapter(Context contex,  List<?> list,boolean hasTitle) {
         this.contex = contex;
-        this.tabDetailPagers = null;
-        this.titles = titles;
+        if(hasTitle) {
+            this.tabDetailPagers = null;
+            this.titles = (List<String>) list;
+        }else {
+            this.viewList = (List<View>) list;
+        }
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return titles.get(position);
+        if(titles!=null)
+            return titles.get(position);
+        return String.valueOf(position);
     }
 
     @Override
@@ -37,7 +47,9 @@ public class MyTabPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return titles.size();
+        if(titles!=null)
+            return titles.size();
+        return viewList.size();
     }
 
     @Override
@@ -48,8 +60,19 @@ public class MyTabPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+        View view=null;
+        if(titles==null) {
+            view = viewList.get(position);
+            container.addView(view);
+            return  view;
+        }
 
-        View view = LayoutInflater.from(contex).inflate(R.layout.detail,container,false);
+        //titles !=null
+        view = LayoutInflater.from(contex).inflate(R.layout.detail,container,false);
+        //var gallery = (ViewPager)view.findViewById(R.id.gallery);
+
+        //gallery.setAdapter(new MyPagerDetailAdapter());
+
 
         TextView textView = (TextView) view.findViewById(R.id.textView);
         textView.setText(titles.get(position));

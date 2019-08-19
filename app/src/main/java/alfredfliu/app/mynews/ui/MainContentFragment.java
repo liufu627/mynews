@@ -2,7 +2,6 @@ package alfredfliu.app.mynews.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ import lombok.var;
 public class MainContentFragment extends FragmentBase {
     public static final String TAG = MainContentFragment.class.getName();
 
-    ArrayList<View> viewArrayList;
+    ArrayList<View> viewList;
     NoScrollViewPager viewPager;
     RadioGroup radioGroup_bottom_main;
 
@@ -38,7 +37,6 @@ public class MainContentFragment extends FragmentBase {
     private Button btn_shopcar_edit;
 
     private List<BasePage> basePages;
-    private  BasePage currentPage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,9 +54,9 @@ public class MainContentFragment extends FragmentBase {
         basePages.add(new SettingPage(context,R.layout.page_setting,null));
 
 
-        viewArrayList =new ArrayList<>(5);
+        viewList =new ArrayList<>(5);
         for ( var page: basePages) {
-            viewArrayList.add(page.getView());
+            viewList.add(page.getView());
         }
 
         ib_leftmenu = (ImageButton)thisView.findViewById(R.id.ib_leftmenu);
@@ -67,10 +65,11 @@ public class MainContentFragment extends FragmentBase {
         ib_leftmenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Cache.getMainActivity().ToggleMenu();
+                Cache.getMainActivity().ToggleMenu(false);
             }
         } );
 
+        Cache.setCurrentPage( basePages.get(0) );
         radioGroup_bottom_main.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -82,38 +81,38 @@ public class MainContentFragment extends FragmentBase {
 
 
                 var tv_Header = (TextView)thisView.findViewById(R.id.tv_Header);
-                currentPage = basePages.get(index);
+                Cache.setCurrentPage( basePages.get(index) );
                 switch (index) {
-                    case 0:
-                        tv_Header.setText("主页面");
-                        ib_leftmenu.setVisibility(View.GONE);
-                        btn_shopcar_edit.setVisibility(View.GONE);
-
-                        break;
 
                     case 1:
                         tv_Header.setText("新闻");
                         ib_leftmenu.setVisibility(View.VISIBLE);
                         btn_shopcar_edit.setVisibility(View.GONE);
+                        Cache.getMainActivity().enableSlidingMenu(false);
+                        Cache.getMainActivity().leftMenuFragment.setNewsType(0);
                         Cache.getMainActivity().leftMenuFragment.loadCategoryData();
                         break;
                     case 2:
                         tv_Header.setText("商城热卖");
+                        Cache.getMainActivity().enableSlidingMenu(false);
                         ib_leftmenu.setVisibility(View.GONE);
                         btn_shopcar_edit.setVisibility(View.GONE);
                         break;
                     case 3:
                         tv_Header.setText("购物车");
+                        Cache.getMainActivity().enableSlidingMenu(false);
                         ib_leftmenu.setVisibility(View.GONE);
                         btn_shopcar_edit.setVisibility(View.VISIBLE);
                         break;
                     case 4:
                         tv_Header.setText("设置中心");
+                        Cache.getMainActivity().enableSlidingMenu(false);
                         ib_leftmenu.setVisibility(View.GONE);
                         btn_shopcar_edit.setVisibility(View.GONE);
                         break;
                     default:
                         tv_Header.setText("主页面");
+                        Cache.getMainActivity().enableSlidingMenu(false);
                         ib_leftmenu.setVisibility(View.GONE);
                         btn_shopcar_edit.setVisibility(View.GONE);
                         break;
@@ -124,14 +123,14 @@ public class MainContentFragment extends FragmentBase {
 
     public  void UpdateView( )
     {
-        currentPage.UpdateView();
+        Cache.getCurrentPage().UpdateView();
     }
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewPager.setAdapter(new MyPagerAdapter(new ArrayList<View>(viewArrayList)));
+        viewPager.setAdapter(new MyPagerAdapter(new ArrayList<View>(viewList)));
         var defaultRadio = radioGroup_bottom_main.getChildAt(0);
         radioGroup_bottom_main.check(defaultRadio.getId());
 
