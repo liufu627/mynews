@@ -1,7 +1,7 @@
 package alfredfliu.app.mynews.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +42,7 @@ public class MainContentFragment extends FragmentBase {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         thisView = View.inflate(context,R.layout.fragment_main,null);
         viewPager = (NoScrollViewPager) thisView.findViewById(R.id.viewPager_Main);
         radioGroup_bottom_main = (RadioGroup) thisView.findViewById(R.id.radioGroup_bottom_main);
@@ -70,11 +71,13 @@ public class MainContentFragment extends FragmentBase {
         } );
 
         Cache.setCurrentPage( basePages.get(0) );
+        viewPager.setTag(viewList.get(0));
         radioGroup_bottom_main.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 var index = group.indexOfChild(group.findViewById(checkedId));
                 viewPager.setCurrentItem(index, false);
+                viewPager.setTag(viewList.get(index));
 
                 // show the  slidingmenu when news page is on, otherwise, hide it.
                // Cache.getMainActivity().enableSlidingMenu(false);
@@ -130,7 +133,7 @@ public class MainContentFragment extends FragmentBase {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewPager.setAdapter(new MyPagerAdapter(new ArrayList<View>(viewList)));
+        viewPager.setAdapter(new MyPagerAdapter(viewList));
         var defaultRadio = radioGroup_bottom_main.getChildAt(0);
         radioGroup_bottom_main.check(defaultRadio.getId());
 

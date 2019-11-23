@@ -1,16 +1,36 @@
 package alfredfliu.app.mynews.base;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/*
+*
+*
+*
+ */
 public interface Gate {
     /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
+     * when c
+     * @param    param  <p>itemlist 0:url,String;1:content from url,String,2: a object casted from content</p>
      *
-     * @see     java.lang.Thread#run()
      */
-    public abstract void run(Object... param);
+    void run(Item param);
+
+    public class Item{
+        public Item(String url, String content, Object object) {
+            Url = url;
+            Content = content;
+            this.object = object;
+        }
+
+        @Getter
+        @Setter
+        String Url;
+        @Getter
+        @Setter
+        String Content;
+        @Getter
+        @Setter
+        Object object;
+    }
 }

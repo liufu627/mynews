@@ -19,9 +19,16 @@ public class Cache {
     @Setter
     public static Context Context;
 
-    @Getter
-    @Setter
-    public static MainActivity MainActivity;
+    static MainActivity MainActivity;
+
+
+    public static MainActivity getMainActivity() {
+    return  MainActivity;
+    }
+    public static void setMainActivity(MainActivity value) {
+        MainActivity = value;
+    }
+
 
 //    @Getter
 //    @Setter
@@ -41,15 +48,24 @@ public class Cache {
     public static BasePage CurrentNewsType;
 
 
-    public static Map<String,Object> ObjectGlobal=new HashMap<>(100);
-    public static Map<String,String> StringGlobal=new HashMap<>(100);
+    private static Map<String,Object> ObjectGlobal=new HashMap<>(100);
+    private static Map<String,String> StringGlobal=new HashMap<>(100);
 
-    public static void putString(Context context, String url, String result) {
-
+    public static void setNetCache(String url, String result) {
         StringGlobal.put(url,result);
     }
+    public static String getNetCache(String url) {
+        return StringGlobal.get(url);
+    }
 
-    public static void put(String key,Object value){
+//    @Getter
+//    @Setter
+//    public  static  Boolean ImageScrolling;
+
+    public static void setObjectCache(String key, Object value){
         ObjectGlobal.put(key,value);
+    }
+    public static Object getObjectCache(String key){
+        return ObjectGlobal.get(key);
     }
 }

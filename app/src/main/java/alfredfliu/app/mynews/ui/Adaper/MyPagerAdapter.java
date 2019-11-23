@@ -1,28 +1,39 @@
 package alfredfliu.app.mynews.ui.Adaper;
 
-import android.support.v4.view.PagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MyPagerAdapter extends PagerAdapter {
-    private final List<View> imageViewArrayList;
+    private final List<View> listView;
+    List<String> titles;
 
-    public MyPagerAdapter(List<View> imageViewArrayList) {
-        this.imageViewArrayList = imageViewArrayList;
+    public MyPagerAdapter(List<?> listView) {
+        this(listView,null);
+    }
+
+    public MyPagerAdapter(List<?> listView,List<String> titles) {
+        this.listView = (List<View>) listView;
+        this.titles = titles;
     }
     @Override
+    public CharSequence getPageTitle(int position) {
+        if(titles!=null)
+            return titles.get(position);
+        return String.valueOf(position);
+    }
+
+
+    @Override
     public int getCount() {
-        return imageViewArrayList.size();
+        return listView.size();
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View thisChild = imageViewArrayList.get(position);
+        View thisChild = listView.get(position);
         container.addView(thisChild);
         return thisChild;
     }

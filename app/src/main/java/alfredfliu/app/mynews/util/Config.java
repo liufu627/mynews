@@ -40,7 +40,7 @@ public class Config {
     }
 
 
-    public static String HostUrl = "http://192.168.1.107:8002";
+    public static String HostUrl = "http://192.168.1.104:8002";
     public static String WebAppName = "web_home";
     public static String RootUrl = HostUrl +"/" + WebAppName;
     public static String Url = RootUrl + "/static/api/news/categories.json";

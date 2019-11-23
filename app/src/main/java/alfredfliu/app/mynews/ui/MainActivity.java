@@ -1,7 +1,7 @@
 package alfredfliu.app.mynews.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,7 +14,6 @@ import alfredfliu.app.mynews.util.Cache;
 import alfredfliu.app.mynews.util.MyLog;
 import lombok.Getter;
 import lombok.var;
-
 public class MainActivity extends SlidingFragmentActivity {
 
     private int screeWidth;
@@ -27,7 +26,7 @@ public class MainActivity extends SlidingFragmentActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//设置没有标题
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         setBehindContentView(R.layout.sample_leftmenu_fragment);
 
         InitSlidingMenu();

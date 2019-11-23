@@ -11,9 +11,14 @@
             <option value="$PROJECT_DIR$/SlidingMenuLibrary" />
             <option value="$PROJECT_DIR$/ViewPagerIndicator_library" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/libjava" />
+            <option value="$PROJECT_DIR$/mvc" />
+            <option value="$PROJECT_DIR$/mylibrary" />
+            <option value="$PROJECT_DIR$/xutils" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="testRunner" value="PLATFORM" />
       </GradleProjectSettings>
     </option>
   </component>

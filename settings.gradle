@@ -1,2 +1,3 @@
-include ':app', ':SlidingMenuLibrary'
+include ':app', ':SlidingMenuLibrary', ':mylibrary', ':libjava', ':mvc'
 include ':ViewPagerIndicator_library'
+include ':xutils'

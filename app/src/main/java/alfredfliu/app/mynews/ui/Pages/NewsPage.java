@@ -3,6 +3,8 @@ package alfredfliu.app.mynews.ui.Pages;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -11,14 +13,12 @@ import java.util.List;
 import alfredfliu.app.mynews.R;
 import alfredfliu.app.mynews.base.BasePage;
 import alfredfliu.app.mynews.net.DataCenter;
-import alfredfliu.app.mynews.ui.Adaper.MyTabPagerAdapter;
 import alfredfliu.app.mynews.ui.MainActivity;
 import alfredfliu.app.mynews.ui.NewsType.DefaultNewsType;
 import alfredfliu.app.mynews.ui.NewsType.InteractNewType;
 import alfredfliu.app.mynews.ui.NewsType.PicNewsType;
 import alfredfliu.app.mynews.ui.NewsType.SpecNewsType;
 import alfredfliu.app.mynews.ui.NewsType.VoteNewType;
-import alfredfliu.app.mynews.ui.control.NoScrollViewPager;
 import alfredfliu.app.mynews.util.Cache;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,18 +26,17 @@ import lombok.Setter;
 import lombok.var;
 
 public class NewsPage extends BasePage {
-    private NoScrollViewPager viewPager_NewsType;
+    //private NoScrollViewPager viewPager_NewsType;
 
     private List<BasePage> newsTypePages;
 
-    MyTabPagerAdapter myTabPagerAdapter;
+    FrameLayout fl_newsTypePages;
 
     @Getter
     @Setter(value = AccessLevel.PRIVATE)
     int CurrentIndex;
 
     @Getter
-    @Setter(value = AccessLevel.PRIVATE)
     BasePage CurrentPage;
 
     List<View> viewList;
@@ -74,24 +73,22 @@ public class NewsPage extends BasePage {
             viewList.add(page.getView());
         }
 
-        viewPager_NewsType = (NoScrollViewPager)view.findViewById(R.id.viewPager_NewsType);
-
-        myTabPagerAdapter = new MyTabPagerAdapter(context,viewList,false);
-        viewPager_NewsType.setAdapter(myTabPagerAdapter);
-
-        viewPager_NewsType.setCurrentItem(0);
-
+        fl_newsTypePages = (FrameLayout)view.findViewById(R.id.fl_newsTypePages);
+        fl_newsTypePages.removeAllViews();
+        fl_newsTypePages.addView(newsTypePages.get(0).getView());
         Cache.setCurrentNewsType(newsTypePages.get(0));
     }
 
     @Override
     public void UpdateView() {
-        var newsType = Cache.getMainActivity().getLeftMenuFragment().getNewsType();
+        var context = Cache.getContext();
+        MainActivity MainActivity =(MainActivity)context;
+        var newsType = MainActivity.getLeftMenuFragment().getNewsType();
 
         newsType=newsType<0?0:newsType;
         newsType=newsType>4?4:newsType;
 
-        viewPager_NewsType.setCurrentItem(newsType);
+        //viewPager_NewsType.setCurrentItem(newsType);
 
         if(newsType == 4 ) {
          var popup=   Toast.makeText(context, "Can not access it.", Toast.LENGTH_SHORT);
@@ -110,6 +107,16 @@ public class NewsPage extends BasePage {
 
         Cache.getCurrentNewsType().UpdateView();
 
-        myTabPagerAdapter.notifyDataSetChanged();
+        showPage(CurrentIndex);
+
+    }
+
+    private void showPage(int pageIndex) {
+        CurrentIndex = pageIndex;
+        fl_newsTypePages.removeAllViews();
+        fl_newsTypePages.addView(newsTypePages.get(pageIndex).getView());
+        Cache.setCurrentNewsType(newsTypePages.get(pageIndex));
+
+        Cache.getMainActivity().enableSlidingMenu(pageIndex == 0);
     }
 }

@@ -1,7 +1,7 @@
 package alfredfliu.app.mynews.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,8 +70,8 @@ public class LeftMenuFragment extends FragmentBase {
 
          DataCenter.Load_MyCategory(false,new Gate() {
             @Override
-            public void run(Object... param) {
-                var menuStrList2 = (List<String>) param[0];
+            public void run(Item param) {
+                var menuStrList2 = (List<String>) param.getObject();
                 UpdateView(menuStrList2);
                 Cache.getMainActivity().mainContentFragment.UpdateView();
             }

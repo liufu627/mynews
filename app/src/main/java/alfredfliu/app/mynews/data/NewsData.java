@@ -42,7 +42,7 @@ public class NewsData {
         private String countcommenturl;
         private String more;
         private String title;
-        private List<?> news;
+        private List<Item_News> news;
         private List<?> topic;
         private List<TopnewsBean> topnews;
 
@@ -70,11 +70,11 @@ public class NewsData {
             this.title = title;
         }
 
-        public List<?> getNews() {
+        public List<Item_News> getNews() {
             return news;
         }
 
-        public void setNews(List<?> news) {
+        public void setNews(List<Item_News> news) {
             this.news = news;
         }
 
@@ -188,6 +188,91 @@ public class NewsData {
             public void setUrl(String url) {
                 this.url = url;
             }
+        }
+        public static class Item_News
+        {
+            private String id;//147314
+           private String title;         //"徒步登高欣赏京城第一片红叶",
+           private String url;//": "/static/html/2015/10/20/714C6E50486D197B6F257C45.html",
+           private String listimage;//": "/static/images/2015/10/20/3/1420927604KB07.jpg",
+           private String pubdate;//": "2015-10-20 09:37",
+           private String comment;//": true,
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+
+            public String getListimage() {
+                return listimage;
+            }
+
+            public void setListimage(String listimage) {
+                this.listimage = listimage;
+            }
+
+            public String getPubdate() {
+                return pubdate;
+            }
+
+            public void setPubdate(String pubdate) {
+                this.pubdate = pubdate;
+            }
+
+            public String getComment() {
+                return comment;
+            }
+
+            public void setComment(String comment) {
+                this.comment = comment;
+            }
+
+            public String getCommenturl() {
+                return commenturl;
+            }
+
+            public void setCommenturl(String commenturl) {
+                this.commenturl = commenturl;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
+            }
+
+            public String getCommentlist() {
+                return commentlist;
+            }
+
+            public void setCommentlist(String commentlist) {
+                this.commentlist = commentlist;
+            }
+
+            private String commenturl;//": "/client/user/newComment/147314",
+           private String type;//": "news",
+           private String commentlist;//": "/static/api/news/10012/14/147314/comment_1.json"
         }
     }
 }

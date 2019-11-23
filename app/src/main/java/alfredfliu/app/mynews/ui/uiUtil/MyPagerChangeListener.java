@@ -1,14 +1,12 @@
 package alfredfliu.app.mynews.ui.uiUtil;
 
-import android.support.v4.view.ViewPager;
-import android.view.MotionEvent;
-import android.view.View;
+import androidx.viewpager.widget.ViewPager;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import alfredfliu.app.mynews.util.DensityUtil;
-import alfredfliu.app.mynews.util.MyLog;
 
 public class MyPagerChangeListener implements ViewPager.OnPageChangeListener{
 
