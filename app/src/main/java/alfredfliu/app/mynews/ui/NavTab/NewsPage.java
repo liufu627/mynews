@@ -1,10 +1,9 @@
-package alfredfliu.app.mynews.ui.Pages;
+package alfredfliu.app.mynews.ui.NavTab;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ import lombok.var;
 public class NewsPage extends BasePage {
     //private NoScrollViewPager viewPager_NewsType;
 
+    @Getter
     private List<BasePage> newsTypePages;
 
     FrameLayout fl_newsTypePages;
@@ -46,18 +46,6 @@ public class NewsPage extends BasePage {
         Cache.setNewsPage(this);
 
     }
-    public void setCurrentPage(int index)
-    {
-        if(index == CurrentIndex)
-            return;
-        if(index<0)
-            return;
-        if(index>newsTypePages.size()-1)
-            index = newsTypePages.size()-1;
-
-        Cache.setCurrentNewsType(newsTypePages.get(index));
-    }
-
 
     @Override
     public void InitViewObject() {
@@ -76,47 +64,25 @@ public class NewsPage extends BasePage {
         fl_newsTypePages = (FrameLayout)view.findViewById(R.id.fl_newsTypePages);
         fl_newsTypePages.removeAllViews();
         fl_newsTypePages.addView(newsTypePages.get(0).getView());
-        Cache.setCurrentNewsType(newsTypePages.get(0));
     }
 
-    @Override
-    public void UpdateView() {
-        var context = Cache.getContext();
-        MainActivity MainActivity =(MainActivity)context;
-        var newsType = MainActivity.getLeftMenuFragment().getNewsType();
-
-        newsType=newsType<0?0:newsType;
-        newsType=newsType>4?4:newsType;
-
-        //viewPager_NewsType.setCurrentItem(newsType);
-
-        if(newsType == 4 ) {
-         var popup=   Toast.makeText(context, "Can not access it.", Toast.LENGTH_SHORT);
-         popup.show();
-        }
-
-        List<String> tmpTabs = new ArrayList<>();
-        var data =DataCenter.getMyCategory();
-
-        if( data == null )  return;
-
-        var newsBeans = data.getData().get(0).getChildren();
-        for (var bean : newsBeans) {
-            tmpTabs.add(bean.getTitle());
-        }
-
-        Cache.getCurrentNewsType().UpdateView();
-
-        showPage(CurrentIndex);
-
-    }
-
-    private void showPage(int pageIndex) {
-        CurrentIndex = pageIndex;
-        fl_newsTypePages.removeAllViews();
-        fl_newsTypePages.addView(newsTypePages.get(pageIndex).getView());
-        Cache.setCurrentNewsType(newsTypePages.get(pageIndex));
-
-        Cache.getMainActivity().enableSlidingMenu(pageIndex == 0);
-    }
+//    @Override
+//    public void UpdateView() {
+//        List<String> tmpTabs = new ArrayList<>();
+//        var data =DataCenter.getMyCategory();
+//
+//        if( data == null )  return;
+//
+//        var newsBeans = data.getData().get(0).getChildren();
+//        for (var bean : newsBeans) {
+//            tmpTabs.add(bean.getTitle());
+//        }
+//        showPage(CurrentIndex);
+//    }
+//
+//    private void showPage(int pageIndex) {
+//        CurrentIndex = pageIndex;
+//        fl_newsTypePages.removeAllViews();
+//        fl_newsTypePages.addView(newsTypePages.get(pageIndex).getView());
+//    }
 }

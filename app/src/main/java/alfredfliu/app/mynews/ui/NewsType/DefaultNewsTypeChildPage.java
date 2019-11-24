@@ -51,10 +51,12 @@ public class DefaultNewsTypeChildPage extends BasePage {
     private alfredfliu.app.mynews.data.NewsData newsData;
     private View headerView;
 
+    BasePage Parent;
 
-    public DefaultNewsTypeChildPage(Context context, int resID, ViewGroup parentView) {
-        super(context, resID, parentView);
+    public DefaultNewsTypeChildPage(Context context, int resID, BasePage parentPage) {
+        super(context, resID, null);
 
+        this.Parent = parentPage;
         listView = new ArrayList<>();
         myPagerAdapter = new MyPagerAdapter(listView);
          newsListAdapter = null;
@@ -71,42 +73,48 @@ public class DefaultNewsTypeChildPage extends BasePage {
         lv_newsItems = (RefreshListView)view.findViewById(R.id.lv_newsItems);
         lv_newsItems.addHeaderView(headerView);
 
-        //lv_newsItems.setAdapter(newsListAdapter);
         vp_Gallery.setAdapter(myPagerAdapter);
-//        vp_Gallery.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if(event.getAction() == MotionEvent.ACTION_UP)
-//                    Cache.setImageScrolling(false);
-//                return false;
-//            }
-//        });
         vp_Gallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
-
-               // Cache.setImageScrolling(true);
-                var pointWidth = DensityUtil.dip2px(context,10);
-                var pointHeight= DensityUtil.dip2px(context,10);
-                RelativeLayout.LayoutParams layoutParams= new  RelativeLayout.LayoutParams(pointWidth,pointHeight);
-                //(LinearLayout.LayoutParams) iv_red_point.getLayoutParams();
+                RelativeLayout.LayoutParams layoutParams=(RelativeLayout.LayoutParams)iv_red_point.getLayoutParams();
                 layoutParams.leftMargin =  DensityUtil.dip2px(context,20*i+20*v);
 
                 //MyLog.D("onPageScrolled",layoutParams.leftMargin );
                 iv_red_point.setLayoutParams(layoutParams);
+                CheckLeftMenu(i);
+
             }
 
+            private void CheckLeftMenu(int i)
+            {
+                var activity =Cache.getMainActivity();
+                activity.enableSlidingMenu(false);
+                if(i!=0)return;
+
+                var currentPage=Cache.getDefaultNewsType();
+                var control = currentPage.getDefaultNewsTypeController();
+                if(control == null || control.map_Bean_View == null || control.map_Bean_View.size() == 0 )
+                    return;
+
+                for (DefaultNewsTypeChildPage value: control.map_Bean_View.values()) {
+                    if( value == DefaultNewsTypeChildPage.this)
+                    {
+                        activity.enableSlidingMenu(vp_Gallery.getCurrentItem()==0?true:false);
+                    }
+                    break;
+                }
+            }
             @Override
             public void onPageSelected(int i) {
-                var pointWidth = DensityUtil.dip2px(context,10);
-                var pointHeight= DensityUtil.dip2px(context,10);
                 tv_TopImageText.setText(newsData.getData().getTopnews().get(i).getTitle());
-                RelativeLayout.LayoutParams layoutParams= new  RelativeLayout.LayoutParams(pointWidth,pointHeight);
+                RelativeLayout.LayoutParams layoutParams= (RelativeLayout.LayoutParams)iv_red_point.getLayoutParams();//new  RelativeLayout.LayoutParams(pointWidth,pointHeight);
                 var widthDistince = DensityUtil.dip2px(context,i*20);
                 layoutParams.leftMargin = widthDistince;
                 MyLog.D("OnPageSelected",layoutParams.leftMargin );
-                Cache.getMainActivity().enableSlidingMenu(i==0?true:false);
+
                 iv_red_point.setLayoutParams(layoutParams);
+                CheckLeftMenu(i);
             }
 
             @Override

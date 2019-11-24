@@ -43,7 +43,7 @@ public class DataCenter {
             for (var data : objtemp.getData()) {
                 menuStrList.add(data.getTitle());
             }
-            runnable.run(new Gate.Item(Config.Url,Cache.getNetCache(Config.Url),menuStrList));
+            runnable.run(new Gate.Item(true,Config.Url,Cache.getNetCache(Config.Url),menuStrList));
             return;
         }
 
@@ -60,13 +60,13 @@ public class DataCenter {
                 }
 
                 Cache.setObjectCache(url, obj);//save in cache
-                runnable.run(new Gate.Item(url,arg,menuStrList));
+                runnable.run(new Gate.Item(true,url,arg,menuStrList));
                 return null;
             }
 
             @Override
             public String fail(String... args) {
-                runnable.run(new Gate.Item(Config.Url,"",null));
+                runnable.run(new Gate.Item(false,Config.Url,"",null));
                 return null;
             }
         });
@@ -84,7 +84,7 @@ public class DataCenter {
             NewsData objtemp = (NewsData) Cache.getObjectCache(url);
         //1. in Cache
         if (!forced && objtemp != null) {
-            runnable.run(new Gate.Item(url,Cache.getNetCache(url),objtemp));
+            runnable.run(new Gate.Item(true,url,Cache.getNetCache(url),objtemp));
             return;
         }
 
@@ -97,13 +97,13 @@ public class DataCenter {
                 var obj = (NewsData) new Gson().fromJson(content, NewsData.class);
 
                 Cache.setObjectCache(url, obj);//save in cache
-                runnable.run(new Gate.Item(url,content,obj));
+                runnable.run(new Gate.Item(true,url,content,obj));
                 return null;
             }
 
             @Override
             public String fail(String... args) {
-                runnable.run(new Gate.Item(url,"",null));
+                runnable.run(new Gate.Item(false,url,"",null));
                 return null;
             }
         });

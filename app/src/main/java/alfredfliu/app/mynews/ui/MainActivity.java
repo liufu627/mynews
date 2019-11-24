@@ -52,10 +52,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
         enableSlidingMenu(false);
     }
-    public  void ToggleMenu(boolean loadDataFlag) {
-        if(loadDataFlag)
-            leftMenuFragment.loadCategoryData();
-
+    public  void ToggleMenu() {
         getSlidingMenu().toggle();
     }
 
@@ -76,8 +73,11 @@ public class MainActivity extends SlidingFragmentActivity {
         var tran =manager.beginTransaction();
         leftMenuFragment = new LeftMenuFragment();
         mainContentFragment=new MainContentFragment();
+        //Cache.setMainContentFragment(mainContentFragment);
         tran.replace(R.id.fl_sample_content,mainContentFragment,MainContentFragment.TAG);
         tran.replace(R.id.fl_sample_leftmenu,leftMenuFragment,LeftMenuFragment.TAG);
+        //tran.add(mainContentFragment,MainContentFragment.TAG);
+        //tran.add(leftMenuFragment,LeftMenuFragment.TAG);
         tran.commit();
     }
 }

@@ -24,14 +24,13 @@ import lombok.var;
 public class LeftMenuFragment extends FragmentBase {
     public static final String TAG =LeftMenuFragment.class.getName();
     List<String> menuStrList;
-    private int checkedId;
     private ListView listView;
     private  MyListViewAdapter MyListViewAdapter;
     private boolean needToLoadData = true;
 
     @Setter
     @Getter
-    int NewsType;
+    int CheckedPosition;
 
 
 
@@ -39,7 +38,7 @@ public class LeftMenuFragment extends FragmentBase {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        NewsType = 0;
+        CheckedPosition = 0;
         menuStrList = new ArrayList<String>();
         listView = new ListView(context);
         listView.setOnItemClickListener(new LeftMenuFragment.MyClickListener());
@@ -51,21 +50,25 @@ public class LeftMenuFragment extends FragmentBase {
                 if(position == 4 ) {
                     var popup=   Toast.makeText(context, "Can not access it.", Toast.LENGTH_SHORT);
                     popup.show();
-                    Cache.getMainActivity().ToggleMenu(true);
+                    Cache.getMainActivity().ToggleMenu();
                     return;
                 }
 
-                NewsType = position;
+                CheckedPosition = position;
                 MyListViewAdapter.setCheckedIndex(position);
                 MyListViewAdapter.notifyDataSetChanged();
 
-                Cache.getNewsPage().setCurrentPage(position);
-                Cache.getMainActivity().ToggleMenu(true);
-                Cache.getMainActivity().mainContentFragment.UpdateView();
+                UpdateView();
+                //Cache.getMainActivity().ToggleMenu(true);
+                //Cache.getMainActivity().mainContentFragment.UpdateView();
             }
         });
-        loadCategoryData();
     }
+
+    public  void UpdateView() {
+        Cache.getNewsPage().getNewsTypePages().get(CheckedPosition).UpdateView();
+    }
+
     public void loadCategoryData() {
 
          DataCenter.Load_MyCategory(false,new Gate() {
@@ -73,7 +76,9 @@ public class LeftMenuFragment extends FragmentBase {
             public void run(Item param) {
                 var menuStrList2 = (List<String>) param.getObject();
                 UpdateView(menuStrList2);
-                Cache.getMainActivity().mainContentFragment.UpdateView();
+
+                UpdateView();//show news on main area.
+                //Cache.getMainActivity().mainContentFragment.UpdateView();
             }
         });
     }

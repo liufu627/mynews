@@ -6,10 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import alfredfliu.app.mynews.base.BasePage;
-import alfredfliu.app.mynews.ui.LeftMenuFragment;
 import alfredfliu.app.mynews.ui.MainActivity;
+import alfredfliu.app.mynews.ui.NavTab.NewsPage;
 import alfredfliu.app.mynews.ui.NewsType.DefaultNewsType;
-import alfredfliu.app.mynews.ui.Pages.NewsPage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +20,9 @@ public class Cache {
 
     static MainActivity MainActivity;
 
+//    @Setter
+//    @Getter
+//    static MainContentFragment MainContentFragment;
 
     public static MainActivity getMainActivity() {
     return  MainActivity;
@@ -39,13 +41,13 @@ public class Cache {
     public static NewsPage NewsPage;
 
 
-    @Getter
-    @Setter
-    public static BasePage CurrentPage;
+//    @Getter
+//    @Setter
+//    public static BasePage CurrentPage;
 
     @Getter
     @Setter
-    public static BasePage CurrentNewsType;
+    public static DefaultNewsType DefaultNewsType;
 
 
     private static Map<String,Object> ObjectGlobal=new HashMap<>(100);

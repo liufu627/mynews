@@ -1,4 +1,4 @@
-package alfredfliu.app.mynews.ui.Pages;
+package alfredfliu.app.mynews.ui.NavTab;
 
 import android.content.Context;
 import android.view.ViewGroup;

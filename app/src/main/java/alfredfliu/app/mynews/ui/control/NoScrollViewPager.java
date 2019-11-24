@@ -29,9 +29,9 @@ public class NoScrollViewPager extends ViewPager {
         return false;
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-
-        return super.dispatchKeyEvent(event);
-    }
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//         getParent().requestDisallowInterceptTouchEvent(true);
+//        return super.dispatchTouchEvent(ev);
+//    }
 }

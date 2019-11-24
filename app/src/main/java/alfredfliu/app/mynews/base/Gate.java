@@ -17,12 +17,15 @@ public interface Gate {
     void run(Item param);
 
     public class Item{
-        public Item(String url, String content, Object object) {
+        public Item(Boolean Success,String url, String content, Object object) {
+            this.Success =Success;
             Url = url;
             Content = content;
             this.object = object;
         }
-
+        @Getter
+        @Setter
+        Boolean Success;
         @Getter
         @Setter
         String Url;

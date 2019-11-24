@@ -16,13 +16,14 @@ import java.util.List;
 import alfredfliu.app.mynews.R;
 import alfredfliu.app.mynews.base.BasePage;
 import alfredfliu.app.mynews.ui.Adaper.MyPagerAdapter;
-import alfredfliu.app.mynews.ui.Pages.EMarketPage;
-import alfredfliu.app.mynews.ui.Pages.MainPage;
-import alfredfliu.app.mynews.ui.Pages.NewsPage;
-import alfredfliu.app.mynews.ui.Pages.SettingPage;
-import alfredfliu.app.mynews.ui.Pages.ShopCarPage;
+import alfredfliu.app.mynews.ui.NavTab.EMarketPage;
+import alfredfliu.app.mynews.ui.NavTab.MainPage;
+import alfredfliu.app.mynews.ui.NavTab.NewsPage;
+import alfredfliu.app.mynews.ui.NavTab.SettingPage;
+import alfredfliu.app.mynews.ui.NavTab.ShopCarPage;
 import alfredfliu.app.mynews.ui.control.NoScrollViewPager;
 import alfredfliu.app.mynews.util.Cache;
+import lombok.Getter;
 import lombok.var;
 
 public class MainContentFragment extends FragmentBase {
@@ -36,7 +37,8 @@ public class MainContentFragment extends FragmentBase {
     private ImageButton ib_leftmenu;
     private Button btn_shopcar_edit;
 
-    private List<BasePage> basePages;
+    @Getter
+     List<BasePage> basePages;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,11 +68,11 @@ public class MainContentFragment extends FragmentBase {
         ib_leftmenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Cache.getMainActivity().ToggleMenu(false);
+                Cache.getMainActivity().ToggleMenu();
             }
         } );
 
-        Cache.setCurrentPage( basePages.get(0) );
+        //Cache.setCurrentPage( basePages.get(0) );
         viewPager.setTag(viewList.get(0));
         radioGroup_bottom_main.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -82,53 +84,34 @@ public class MainContentFragment extends FragmentBase {
                 // show the  slidingmenu when news page is on, otherwise, hide it.
                // Cache.getMainActivity().enableSlidingMenu(false);
 
-
                 var tv_Header = (TextView)thisView.findViewById(R.id.tv_Header);
-                Cache.setCurrentPage( basePages.get(index) );
+                Cache.getMainActivity().enableSlidingMenu(false);
+                ib_leftmenu.setVisibility(View.GONE);
+                btn_shopcar_edit.setVisibility(View.GONE);
                 switch (index) {
 
                     case 1:
                         tv_Header.setText("新闻");
                         ib_leftmenu.setVisibility(View.VISIBLE);
-                        btn_shopcar_edit.setVisibility(View.GONE);
-                        Cache.getMainActivity().enableSlidingMenu(false);
-                        Cache.getMainActivity().leftMenuFragment.setNewsType(0);
                         Cache.getMainActivity().leftMenuFragment.loadCategoryData();
                         break;
                     case 2:
                         tv_Header.setText("商城热卖");
-                        Cache.getMainActivity().enableSlidingMenu(false);
-                        ib_leftmenu.setVisibility(View.GONE);
-                        btn_shopcar_edit.setVisibility(View.GONE);
                         break;
                     case 3:
                         tv_Header.setText("购物车");
-                        Cache.getMainActivity().enableSlidingMenu(false);
-                        ib_leftmenu.setVisibility(View.GONE);
                         btn_shopcar_edit.setVisibility(View.VISIBLE);
                         break;
                     case 4:
                         tv_Header.setText("设置中心");
-                        Cache.getMainActivity().enableSlidingMenu(false);
-                        ib_leftmenu.setVisibility(View.GONE);
-                        btn_shopcar_edit.setVisibility(View.GONE);
                         break;
                     default:
                         tv_Header.setText("主页面");
-                        Cache.getMainActivity().enableSlidingMenu(false);
-                        ib_leftmenu.setVisibility(View.GONE);
-                        btn_shopcar_edit.setVisibility(View.GONE);
                         break;
                 }
             }
         });
     }
-
-    public  void UpdateView( )
-    {
-        Cache.getCurrentPage().UpdateView();
-    }
-
 
     @Nullable
     @Override
