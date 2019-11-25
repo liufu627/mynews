@@ -30,10 +30,6 @@ public class DefaultNewsType extends BasePage {
     @Setter(value = AccessLevel.PRIVATE)
     boolean isLastPage = false;
 
-    @Getter
-    @Setter(value = AccessLevel.PRIVATE)
-    boolean isFirstPage = false;
-
     List<String> listTabTitle;
     List<View> listTabView;
     MyPagerAdapter adapter;
@@ -54,7 +50,6 @@ public class DefaultNewsType extends BasePage {
         adapter = new MyPagerAdapter(listTabView, listTabTitle);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
-        isFirstPage = true;
         tabGroup.setViewPager(viewPager);
 
         DefaultNewsTypeController.setViewPager(viewPager);
@@ -65,13 +60,11 @@ public class DefaultNewsType extends BasePage {
 
             @Override
             public void onPageSelected(int position) {
-
+                Cache.getMainActivity().enableSlidingMenu(false);
                 if (position == 0){
-                    //Cache.getMainActivity().enableSlidingMenu(true);
-                    isFirstPage = true;}
+                    Cache.getMainActivity().enableSlidingMenu(true);
+                }
                 else {
-                    Cache.getMainActivity().enableSlidingMenu(false);
-                    isFirstPage = false;
                     isLastPage = position == listTabTitle.size() - 1;
                 }
 

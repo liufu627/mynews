@@ -53,8 +53,11 @@ public class DefaultNewsTypeChildPage extends BasePage {
 
     BasePage Parent;
 
+    private  Boolean loaded;
+
     public DefaultNewsTypeChildPage(Context context, int resID, BasePage parentPage) {
         super(context, resID, null);
+        loaded = false;
 
         this.Parent = parentPage;
         listView = new ArrayList<>();
@@ -130,6 +133,7 @@ public class DefaultNewsTypeChildPage extends BasePage {
  */
     @Override
     public void UpdateView() {
+        if( loaded) return;
         DataCenter.Load_News(Bean, true, new Gate() {
             @Override
             public void run(Gate.Item param) {
@@ -175,6 +179,7 @@ public class DefaultNewsTypeChildPage extends BasePage {
                 newsListAdapter.setData(newsData);
                 newsListAdapter.notifyDataSetChanged();
                 vp_Gallery.setCurrentItem(0);
+                loaded = true;
             }
         });
     }
