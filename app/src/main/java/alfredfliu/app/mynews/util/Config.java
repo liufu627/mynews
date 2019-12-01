@@ -18,11 +18,20 @@ public class Config {
             MyLog.Df("Config.hadFlash: %s", result);
             return result;
         }
+        Integer.highestOneBit(0);
         MyLog.Df("Config.hadFlash: %s", value);
 
         sp.edit().putBoolean(FLAG_FLASH, value).commit();
 
         return value;
+    }
+    public static void PutUrlContent(Context context,String url,String content) {
+        SharedPreferences sp =context.getSharedPreferences(TAG,Context.MODE_PRIVATE);
+        sp.edit().putString(url,content).commit();
+    }
+    public static String GetUrlContent(Context context,String url) {
+        SharedPreferences sp =context.getSharedPreferences(TAG,Context.MODE_PRIVATE);
+        return sp.getString(url,"");
     }
 
     public static boolean clickedEnterButton(Context context, Boolean value) {

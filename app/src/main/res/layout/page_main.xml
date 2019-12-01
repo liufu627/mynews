@@ -8,9 +8,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Main"
-            android:textSize="30sp" />
+            style="@style/BigText"
+            android:text="Main"/>
 
    </LinearLayout>

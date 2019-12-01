@@ -37,7 +37,7 @@ public class NetHelper {
     public static void GetRemoteData_xuntil(final String url, final Promise<String, String> promise) {
         final var context = Cache.getContext();
         String objtemp = Cache.getNetCache(url);
-        if (objtemp != null) {
+        if (objtemp != null && objtemp !="") {
             promise.pass(url, objtemp);
             return;
         }
@@ -78,7 +78,7 @@ public class NetHelper {
     public static void GetRemoteData_Volley(final String url, final Promise<String, String> promise) {
         final var context = Cache.getContext();
         String objtemp = Cache.getNetCache(url);
-        if (objtemp != null) {
+        if (objtemp != null&& objtemp.length()>0) {
             promise.pass(url, objtemp);
             return;
         }

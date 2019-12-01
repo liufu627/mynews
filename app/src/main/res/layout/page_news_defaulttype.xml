@@ -11,6 +11,9 @@
             android:id="@+id/tabpages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp" android:orientation="horizontal" android:background="@color/default_circle_indicator_stroke_color"/>
     <!--</LinearLayout>-->
 <androidx.viewpager.widget.ViewPager
     android:id="@+id/vp_News"

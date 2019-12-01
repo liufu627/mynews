@@ -9,11 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_gravity="center"
+        style="@style/BigText"
         android:layout_weight="1"
-        android:gravity="center"
         android:text="主页面"
-        android:textSize="30sp" />
+         />
 
     <ImageButton
         android:id="@+id/ib_leftmenu"
@@ -34,7 +33,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="left"
         android:text="编辑"
-        android:textSize="20sp"
+        style="@style/normalText"
         android:src="@drawable/img_menu" />
 
 

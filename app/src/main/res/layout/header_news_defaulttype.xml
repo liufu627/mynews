@@ -21,10 +21,10 @@
             android:layout_gravity="center_horizontal"
             android:text="手松刷新。。。"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp" />
-        <TextView android:layout_marginTop="8dp"
+            style="@style/normalText" />
+        <TextView android:layout_marginTop="8dp" style="@style/normalText"
             android:layout_width="wrap_content" android:layout_gravity="center_horizontal" android:textColor="#888888"
-            android:layout_height="wrap_content" android:text="上次更新时间:2019-09-15 17：14：00"  />
+            android:layout_height="wrap_content" android:text="上次更新时间:2019-09-15 17:14:00"  />
     </LinearLayout>
 </LinearLayout>
     <RelativeLayout

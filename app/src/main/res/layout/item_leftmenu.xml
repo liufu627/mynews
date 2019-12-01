@@ -9,7 +9,7 @@
     android:drawablePadding="20dp"
     android:paddingTop="20dp"
     android:textColor="@drawable/menu_textcolor_selector"
-    android:textSize="30sp"
     tools:text="FFFF"
+    style="@style/BigText"
     android:enabled="true"
     />
