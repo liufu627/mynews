@@ -19,6 +19,17 @@ public class RefreshListView extends ListView {
 
     public RefreshListView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+
+    }
+
+
+    public interface  Refresh{
+        public abstract void HeaderRefreshing();
+        public abstract void HeaderRefreshed();
+
+        public abstract void FooterRefreshing();
+        public abstract void FooterRefreshed();
     }
 
 }

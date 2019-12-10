@@ -2,14 +2,18 @@ package alfredfliu.app.mynews.ui.NewsType;
 
 import android.content.Context;
 import androidx.viewpager.widget.ViewPager;
+
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +58,10 @@ public class DefaultNewsTypeChildPage extends BasePage {
     BasePage Parent;
 
     private  Boolean loaded;
+    private LinearLayout ll_loading;
+    private int ll_loading_height;
+    private TextView tx_dragDown;
+    private ImageView img_loading;
 
     public DefaultNewsTypeChildPage(Context context, int resID, BasePage parentPage) {
         super(context, resID, null);
@@ -61,6 +69,8 @@ public class DefaultNewsTypeChildPage extends BasePage {
 
         this.Parent = parentPage;
         listView = new ArrayList<>();
+
+
         myPagerAdapter = new MyPagerAdapter(listView);
          newsListAdapter = null;
     }
@@ -69,11 +79,74 @@ public class DefaultNewsTypeChildPage extends BasePage {
     public void InitViewObject() {
           headerView = View.inflate(context,R.layout.header_news_defaulttype,null);
         vp_Gallery = (TopImageViewPager) headerView.findViewById(R.id.gallery);
+        ll_loading = (LinearLayout)headerView.findViewById(R.id.ll_loading);
+        ll_loading.measure(0,0);
+        ll_loading_height = ll_loading.getMeasuredHeight();
+        ll_loading.setPadding(0,-ll_loading_height,0,0);
         tv_TopImageText = (TextView)headerView.findViewById(R.id.tv_TopImageText);
          ll_points =(LinearLayout)headerView.findViewById(R.id.ll_points);
          iv_red_point =(ImageView)headerView.findViewById(R.id.iv_red_point);
+        tx_dragDown =(TextView)headerView.findViewById(R.id.tx_dragDown);
+        img_loading =(ImageView)headerView.findViewById(R.id.img_loading);
 
         lv_newsItems = (RefreshListView)view.findViewById(R.id.lv_newsItems);
+        lv_newsItems.setOnTouchListener(new View.OnTouchListener() {
+            private int bottom;
+            private int right;
+            private int left;
+            private int top;
+            private int[] outLocation=new int[2];
+            private int[] origial_outLocation =new int[2];
+            private float downY;
+            private float downX;
+
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                var action =event.getAction();
+
+                if(action == MotionEvent.ACTION_DOWN){
+                    downX = event.getX();
+                    downY = event.getY();
+                    top = ll_loading.getTop();
+                    left =ll_loading.getLeft();
+                    right=ll_loading.getRight();
+                    bottom=ll_loading.getBottom();
+
+                    if(origial_outLocation ==null) {
+                        origial_outLocation = new int[2];
+                        vp_Gallery.getLocationOnScreen(origial_outLocation);
+                        MyLog.D("ll_loading_height:",ll_loading_height,"meausre height:",ll_loading.getMeasuredHeight(),"height:", ll_points.getHeight());
+                    }
+                    MyLog.D("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+                }else if(action == MotionEvent.ACTION_MOVE){
+                    var distance= (int)(event.getY() -downY);
+                        vp_Gallery.getLocationOnScreen(outLocation);
+                    MyLog.D("origial-y:",origial_outLocation[1],"y:",outLocation[1],"distance:",distance);
+                    if(outLocation[1]>=origial_outLocation[1]
+                    && distance>0){
+                        MyLog.D( "top-padding:",-ll_loading_height+distance);
+                        if( (-ll_loading_height+distance) >= ll_loading_height){
+                            tx_dragDown.setText("手松刷新");
+                            var animation= new RotateAnimation(0,180,RotateAnimation.RELATIVE_TO_SELF,0.5F,RotateAnimation.RELATIVE_TO_SELF ,0.5F);
+
+                            //var animation2= new RotateAnimation
+                            animation.setDuration(500);
+                            animation.setFillAfter(true);
+                            img_loading.startAnimation(animation);
+
+                        }else{
+                            tx_dragDown.setText("下拉刷新");
+                        }
+                        ll_loading.setPadding(0,-ll_loading_height+distance,0,0);
+                    }
+                }else if(action == MotionEvent.ACTION_UP) {
+                    ll_loading.setPadding(0, -ll_loading_height, 0, 0);
+                }
+                return false;
+            }
+        });
         lv_newsItems.addHeaderView(headerView);
 
         vp_Gallery.setAdapter(myPagerAdapter);
@@ -85,28 +158,6 @@ public class DefaultNewsTypeChildPage extends BasePage {
 
                 //MyLog.D("onPageScrolled",layoutParams.leftMargin );
                 iv_red_point.setLayoutParams(layoutParams);
-                CheckLeftMenu(i);
-
-            }
-
-            private void CheckLeftMenu(int i)
-            {
-                var activity =Cache.getMainActivity();
-                activity.enableSlidingMenu(false);
-                if(i!=0)return;
-
-                var currentPage=Cache.getDefaultNewsType();
-                var control = currentPage.getDefaultNewsTypeController();
-                if(control == null || control.map_Bean_View == null || control.map_Bean_View.size() == 0 )
-                    return;
-
-                for (DefaultNewsTypeChildPage value: control.map_Bean_View.values()) {
-                    if( value == DefaultNewsTypeChildPage.this)
-                    {
-                        activity.enableSlidingMenu(vp_Gallery.getCurrentItem()==0?true:false);
-                    }
-                    break;
-                }
             }
             @Override
             public void onPageSelected(int i) {
@@ -117,7 +168,6 @@ public class DefaultNewsTypeChildPage extends BasePage {
                 MyLog.D("OnPageSelected",layoutParams.leftMargin );
 
                 iv_red_point.setLayoutParams(layoutParams);
-                CheckLeftMenu(i);
             }
 
             @Override
@@ -179,6 +229,7 @@ public class DefaultNewsTypeChildPage extends BasePage {
                 newsListAdapter.setData(newsData);
                 newsListAdapter.notifyDataSetChanged();
                 vp_Gallery.setCurrentItem(0);
+
                 loaded = true;
             }
         });

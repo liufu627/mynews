@@ -191,6 +191,10 @@ public class DefaultNewsType extends BasePage {
             var view = map_Bean_View.get(keyBean);
             view.SetBean(keyBean);
             view.UpdateView();
+            if(position == 0){
+                var activity =Cache.getMainActivity();
+                activity.enableSlidingMenu(true);
+            }
         }
 
     }
