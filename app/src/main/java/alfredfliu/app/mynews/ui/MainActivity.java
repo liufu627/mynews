@@ -20,6 +20,7 @@ public class MainActivity extends SlidingFragmentActivity {
     private int screeHeight;
     @Getter
      LeftMenuFragment leftMenuFragment;
+
      MainContentFragment mainContentFragment;
 
     @Override
@@ -31,10 +32,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
         InitSlidingMenu();
         initFragment();
-
-        Cache.setContext(this);
-        Cache.setMainActivity(this);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION );
 
     }

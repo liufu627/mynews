@@ -11,10 +11,10 @@ import lombok.Setter;
 public interface Gate {
     /**
      * when c
-     * @param    param  <p>itemlist 0:url,String;1:content from url,String,2: a object casted from content</p>
+     * @param    arg  <p>itemlist 0:url,String;1:content from url,String,2: a object casted from content</p>
      *
      */
-    void run(Item param);
+    void run(Item arg);
 
     public class Item{
         public Item(Boolean Success,String url, String content, Object object) {

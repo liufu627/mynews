@@ -17,7 +17,7 @@
               style="@style/RadioButton_ImageBottom" />
 
           <RadioButton
-              android:drawableTop="@drawable/news_selector"
+              android:drawableTop="@drawable/news_selector" android:id="@+id/rb_news"
               android:text="新闻"
               style="@style/RadioButton_ImageBottom" />
 

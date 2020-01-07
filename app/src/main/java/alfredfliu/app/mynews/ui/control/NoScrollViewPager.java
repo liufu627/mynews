@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
+import alfredfliu.app.mynews.util.MyLog;
+
 public class NoScrollViewPager extends ViewPager {
     public NoScrollViewPager(Context context) {
         super(context);
@@ -17,12 +19,14 @@ public class NoScrollViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        MyLog.D("NoScrollViewPager onTouchEvent");
         return true;
     }
 
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        MyLog.D("NoScrollViewPager onInterceptTouchEvent");
 //        var viewCount = getAdapter().getCount();
 //        //if(viewCount==5 && )
 //        MyLog.D(" onInterceptTouchEvent getAdapter().getCount()", getAdapter().getCount());

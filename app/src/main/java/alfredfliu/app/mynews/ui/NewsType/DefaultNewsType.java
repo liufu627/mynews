@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.viewpagerindicator.TabPageIndicator;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import alfredfliu.app.mynews.R;
 import alfredfliu.app.mynews.base.BasePage;
+import alfredfliu.app.mynews.base.LoadWay;
 import alfredfliu.app.mynews.data.MyCategory;
 import alfredfliu.app.mynews.net.DataCenter;
 import alfredfliu.app.mynews.ui.Adaper.MyPagerAdapter;
@@ -34,13 +36,17 @@ public class DefaultNewsType extends BasePage {
     List<View> listTabView;
     MyPagerAdapter adapter;
 
+
+    //sub default news pic
+    List<ImageView> listView;
+
     public DefaultNewsType(Context context, int resID, ViewGroup parentView) {
         super(context, resID, parentView);
         listTabTitle = new ArrayList<>();
         listTabView = new ArrayList<>();
-        DefaultNewsTypeController =new DefaultNewsTypeController();
+        DefaultNewsTypeController =new DefaultNewsTypeController(context);
 
-        Cache.setDefaultNewsType(this);
+        //Cache.setDefaultNewsType(this);
     }
 
     @Override
@@ -60,15 +66,15 @@ public class DefaultNewsType extends BasePage {
 
             @Override
             public void onPageSelected(int position) {
-                Cache.getMainActivity().enableSlidingMenu(false);
+                getMainActivity().enableSlidingMenu(false);
                 if (position == 0){
-                    Cache.getMainActivity().enableSlidingMenu(true);
+                    getMainActivity().enableSlidingMenu(true);
                 }
                 else {
                     isLastPage = position == listTabTitle.size() - 1;
                 }
 
-               DefaultNewsTypeController.UpdateView();
+               DefaultNewsTypeController.UpdateView(LoadWay.Load,this.getClass(),null);
             }
 
             @Override
@@ -78,13 +84,13 @@ public class DefaultNewsType extends BasePage {
     }
 
     @Override
-    public void UpdateView() {
+    public void UpdateView(LoadWay way,Class<?> classInfo,Object data) {
 
         //news:DataCenter.getMyCategory().getData().get(0)
         //special news:DataCenter.getMyCategory().getData().get(1)
-        if(DataCenter.getMyCategory()== null || DataCenter.getMyCategory().getData()==null || DataCenter.getMyCategory().getData().size()<1)
+        if(Cache.getMyCategory()== null || Cache.getMyCategory().getData()==null || Cache.getMyCategory().getData().size()<1)
             return;
-        DefaultNewsTypeController.Load(DataCenter.getMyCategory().getData().get(0));
+        DefaultNewsTypeController.Load(Cache.getMyCategory().getData().get(0));
 
         listTabTitle.clear();
         listTabTitle.addAll(DefaultNewsTypeController.getListTabTitle());
@@ -92,7 +98,7 @@ public class DefaultNewsType extends BasePage {
         listTabView.clear();
         listTabView.addAll(DefaultNewsTypeController.getMap_index_View());
 
-        DefaultNewsTypeController.UpdateView();
+        DefaultNewsTypeController.UpdateView(way,classInfo,data);
         adapter.notifyDataSetChanged();
 
         tabGroup.notifyDataSetChanged();
@@ -101,29 +107,18 @@ public class DefaultNewsType extends BasePage {
 
     public class DefaultNewsTypeController {
 
+        public DefaultNewsTypeController(Context context) {
+            this.context = context;
+            ListTabTitle = new ArrayList<>();
+            map_Bean_View = new LinkedHashMap<>();
+        }
+
         public List<View> getMap_index_View() {
             List<View> list = new ArrayList<>();
             var list_View = map_Bean_View.values();
             for (var item : list_View)
                 list.add(item.getView());
             return list;
-        }
-
-        @Getter
-        public ArrayList<String> ListTabTitle;
-
-        private MyCategory.DataBean categoryBean;
-
-        //ui
-        ViewPager viewPager;
-
-        public LinkedHashMap<MyCategory.DataBean.NewsBean, DefaultNewsTypeChildPage> map_Bean_View;
-        //
-        int position = 0;
-
-        public DefaultNewsTypeController() {
-            ListTabTitle = new ArrayList<>();
-            map_Bean_View = new LinkedHashMap<>();
         }
 
         private MyCategory.DataBean.NewsBean IncludeId(List<MyCategory.DataBean.NewsBean> newsBeans, int id) {
@@ -164,7 +159,7 @@ public class DefaultNewsType extends BasePage {
 
             //add newsbean not in map.
             for (var bean : newsBeans) {
-                var view = new DefaultNewsTypeChildPage(Cache.getContext(), DefaultNewsTypeChildPage.ResID, DefaultNewsType.this);
+                var view = new DefaultNewsTypeChildPage(context, DefaultNewsTypeChildPage.ResID, DefaultNewsType.this,bean.getTitle());
                 insertList.put(bean, view);
                 ListTabTitle.add(bean.getTitle());
             }
@@ -185,17 +180,36 @@ public class DefaultNewsType extends BasePage {
             UpdateNewBean(newsBeans); //get latest newsbeans
         }
 
-        public void UpdateView() {
+        public void UpdateView(LoadWay way,Class classInfo,Object data) {
             int position = viewPager.getCurrentItem();
             MyCategory.DataBean.NewsBean keyBean = (MyCategory.DataBean.NewsBean) map_Bean_View.keySet().toArray()[position];
             var view = map_Bean_View.get(keyBean);
-            view.SetBean(keyBean);
-            view.UpdateView();
+            view.UpdateView(way,classInfo,keyBean);
             if(position == 0){
-                var activity =Cache.getMainActivity();
+                var activity =getMainActivity();
                 activity.enableSlidingMenu(true);
             }
         }
+        public void DoubleClick(int  position) {
+            MyCategory.DataBean.NewsBean keyBean = (MyCategory.DataBean.NewsBean) map_Bean_View.keySet().toArray()[position];
+            var view = map_Bean_View.get(keyBean);
+            view.DoubleClick();
+        }
 
+        Context context;
+        @Getter
+        public ArrayList<String> ListTabTitle;
+        private MyCategory.DataBean categoryBean;
+        //ui
+        ViewPager viewPager;
+        public LinkedHashMap<MyCategory.DataBean.NewsBean, DefaultNewsTypeChildPage> map_Bean_View;
+        int position = 0;
+    }
+
+    @Override
+    public void DoubleClick() {
+        super.DoubleClick();
+
+       getDefaultNewsTypeController().DoubleClick(viewPager.getCurrentItem());
     }
 }

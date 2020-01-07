@@ -42,9 +42,10 @@ public class NewsPage extends BasePage {
     List<View> viewList;
     public NewsPage(Context context, int resID, ViewGroup parentView) {
         super(context, resID, parentView);
+    }
 
-        Cache.setNewsPage(this);
-
+    public BasePage getChildNewsPage(int index){
+        return newsTypePages.get(index);
     }
 
     @Override

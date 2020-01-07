@@ -5,15 +5,18 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import alfredfliu.app.mynews.util.Cache;
+import alfredfliu.app.mynews.ui.MainActivity;
 
-public class BasePage {
+public class BasePage implements Updatable {
 
     protected final Context context;
     protected final ViewGroup parentView;
     protected View view;
     protected int resID;
     protected ViewHolder viewHolder;
+
+    protected  boolean loaded;
+
 
     public BasePage(Context context, int resID, ViewGroup parentView) {
         this.context = context;
@@ -23,6 +26,10 @@ public class BasePage {
 
     }
 
+    /**
+     * get resID view
+     * @return
+     */
     public View getView() {
         if (view != null)
             return view;
@@ -34,9 +41,22 @@ public class BasePage {
         InitViewObject();
         return view;
     }
+
+    /**
+     * init resID view
+     * @return
+     */
     public  void InitViewObject(){}
 
-    public  void UpdateView()
+
+    public void UpdateView(LoadWay way,Class<?> classInfo,Object data)
     {}
+
+    public void DoubleClick()
+    {}
+
+    public MainActivity getMainActivity(){
+        return (MainActivity )getView().getContext();
+    }
 
 }

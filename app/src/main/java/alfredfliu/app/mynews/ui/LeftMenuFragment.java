@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alfredfliu.app.mynews.R;
+import alfredfliu.app.mynews.base.BasePage;
 import alfredfliu.app.mynews.base.Gate;
+import alfredfliu.app.mynews.base.LoadWay;
+import alfredfliu.app.mynews.data.MyCategory;
 import alfredfliu.app.mynews.net.DataCenter;
 import alfredfliu.app.mynews.ui.Adaper.MyListViewAdapter;
 import alfredfliu.app.mynews.util.Cache;
@@ -31,7 +34,7 @@ public class LeftMenuFragment extends FragmentBase {
     @Setter
     @Getter
     int CheckedPosition;
-
+    private MyCategory MyCategory;
 
 
     @Override
@@ -50,7 +53,7 @@ public class LeftMenuFragment extends FragmentBase {
                 if(position == 4 ) {
                     var popup=   Toast.makeText(context, "Can not access it.", Toast.LENGTH_SHORT);
                     popup.show();
-                    Cache.getMainActivity().ToggleMenu();
+                    getMainActivity().ToggleMenu();
                     return;
                 }
 
@@ -58,15 +61,16 @@ public class LeftMenuFragment extends FragmentBase {
                 MyListViewAdapter.setCheckedIndex(position);
                 MyListViewAdapter.notifyDataSetChanged();
 
-                UpdateView();
+                UpdateNews();
                 //Cache.getMainActivity().ToggleMenu(true);
                 //Cache.getMainActivity().mainContentFragment.UpdateView();
             }
         });
     }
 
-    public  void UpdateView() {
-        Cache.getNewsPage().getNewsTypePages().get(CheckedPosition).UpdateView();
+    public  void UpdateNews() {
+        BasePage obj = getMainActivity().mainContentFragment.getNewsPage().getChildNewsPage(CheckedPosition);
+        obj.UpdateView(LoadWay.Load,obj.getClass(),MyCategory);
     }
 
     public void loadCategoryData() {
@@ -74,22 +78,32 @@ public class LeftMenuFragment extends FragmentBase {
          DataCenter.Load_MyCategory(false,new Gate() {
             @Override
             public void run(Item param) {
-                var menuStrList2 = (List<String>) param.getObject();
-                UpdateView(menuStrList2);
+                //true,url,content,obj
+                var menuStrList2 =new ArrayList<String>();
+                 MyCategory = (MyCategory)param.getObject();
+                for (var data : MyCategory.getData()) {
+                    menuStrList2.add(data.getTitle());
+                }
+                UpdateNewsTypeList(menuStrList2);
 
-                UpdateView();//show news on main area.
+                UpdateNews();//show news on main area.
                 //Cache.getMainActivity().mainContentFragment.UpdateView();
             }
         });
     }
 
-    public  void UpdateView(List<String> menuStrList2 ) {
+    public  void UpdateNewsTypeList(List<String> menuStrList2 ) {
         if(menuStrList2 == null || menuStrList2.size()<1)
             return;
         menuStrList.clear();
         menuStrList.addAll(menuStrList2);
 
         MyListViewAdapter.notifyDataSetChanged();
+    }
+
+    public void doubleClick() {
+        BasePage obj = getMainActivity().mainContentFragment.getNewsPage().getChildNewsPage(CheckedPosition);
+        obj.DoubleClick();
     }
 
     class MyClickListener implements android.widget.AdapterView.OnItemClickListener {

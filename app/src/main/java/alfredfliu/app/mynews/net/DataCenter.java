@@ -23,10 +23,7 @@ public class DataCenter {
     @Setter
     Object CurrentItem;
 
-    public static MyCategory getMyCategory() {
-        MyCategory objtemp = (MyCategory) Cache.getObjectCache(Config.Url);
-        return objtemp;
-    }
+
 
     /*
     *
@@ -34,45 +31,9 @@ public class DataCenter {
     *
      */
     public static void Load_MyCategory( boolean forced,final Gate runnable) {
-        final List<String> menuStrList = new ArrayList<>();
+        final var url = Config.Url;
 
-        MyCategory objtemp = getMyCategory();
-        //1. in Cache
-        if (!forced && objtemp != null) {
-            menuStrList.clear();
-            for (var data : objtemp.getData()) {
-                menuStrList.add(data.getTitle());
-            }
-            runnable.run(new Gate.Item(true,Config.Url,Cache.getNetCache(Config.Url),menuStrList));
-            return;
-        }
-
-        //2. not in Cache,get from net
-        NetHelper.GetCatgories(new Promise<String, String>() {
-            @Override
-            public String pass(String... args) {
-                var url = args[0];
-                var arg = args[1];
-                var obj = (MyCategory) new Gson().fromJson(arg, MyCategory.class);
-                menuStrList.clear();
-                for (var data : obj.getData()) {
-                    menuStrList.add(data.getTitle());
-                }
-
-                Cache.setObjectCache(url, obj);//save in cache
-                runnable.run(new Gate.Item(true,url,arg,menuStrList));
-                return null;
-            }
-
-            @Override
-            public String fail(String... args) {
-                runnable.run(new Gate.Item(false,Config.Url,"",null));
-                return null;
-            }
-        });
-    }
-
-    public static void Load_NewsList(List<MyCategory.DataBean.NewsBean> newsBeans, boolean forced, final Gate runnable) {
+        LoadData(url, forced, runnable, MyCategory.class);
     }
 
     /*
@@ -80,8 +41,21 @@ public class DataCenter {
      */
         public static  void Load_News(MyCategory.DataBean.NewsBean newsBean, boolean forced, final Gate runnable) {
 
-        final var url=Config.RootUrl + newsBean.getUrl();
-            NewsData objtemp = (NewsData) Cache.getObjectCache(url);
+            final var url = Config.RootUrl + newsBean.getUrl();
+
+            LoadData(url, forced, runnable, NewsData.class);
+
+        }
+
+    public static void LoadMore(alfredfliu.app.mynews.data.NewsData newsData,boolean forced,final Gate  runnable) {
+
+        final var url=Config.RootUrl + newsData.getData().getMore();
+
+        LoadData(url,forced,runnable,newsData.getClass());
+    }
+
+    public  static void  LoadData(final String url, boolean forced, final Gate runnable, final Class<?> classInfo){
+        Object objtemp = Cache.getObjectCache(url);
         //1. in Cache
         if (!forced && objtemp != null) {
             runnable.run(new Gate.Item(true,url,Cache.getNetCache(url),objtemp));
@@ -94,7 +68,7 @@ public class DataCenter {
             public String pass(String... args) {
                 var url = args[0];
                 var content = args[1];
-                var obj = (NewsData) new Gson().fromJson(content, NewsData.class);
+                var obj = new Gson().fromJson(content, classInfo);
 
                 Cache.setObjectCache(url, obj);//save in cache
                 runnable.run(new Gate.Item(true,url,content,obj));
@@ -108,5 +82,4 @@ public class DataCenter {
             }
         });
     }
-
 }

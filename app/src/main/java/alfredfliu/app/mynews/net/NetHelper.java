@@ -35,7 +35,7 @@ public class NetHelper {
     }
 
     public static void GetRemoteData_xuntil(final String url, final Promise<String, String> promise) {
-        final var context = Cache.getContext();
+       // final var context = Cache.getContext();
         String objtemp = Cache.getNetCache(url);
         if (objtemp != null && objtemp !="") {
             promise.pass(url, objtemp);
@@ -76,17 +76,18 @@ public class NetHelper {
 
 
     public static void GetRemoteData_Volley(final String url, final Promise<String, String> promise) {
-        final var context = Cache.getContext();
+        //final var context = Cache.getContext();
         String objtemp = Cache.getNetCache(url);
         if (objtemp != null&& objtemp.length()>0) {
             promise.pass(url, objtemp);
             return;
         }
 
+
         var request = new com.android.volley.toolbox.StringRequest(com.android.volley.Request.Method.GET, url, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String result) {
-                //MyLog.D(url, "使用Volley联网请求成功==", result);
+                MyLog.D(url, "使用Volley联网请求成功==", result);
                 //缓存数据
                 Cache.setNetCache(url, result);
 
@@ -99,6 +100,7 @@ public class NetHelper {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 promise.fail(url, volleyError.getMessage());
+                MyLog.D(url, "使用Volley联网请求失败", volleyError.getMessage());
             }
         }) {
             @Override

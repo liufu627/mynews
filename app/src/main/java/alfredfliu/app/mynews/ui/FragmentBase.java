@@ -13,4 +13,8 @@ public class FragmentBase  extends Fragment {
         super.onCreate(savedInstanceState);
         this.context = getActivity();
     }
+
+    public MainActivity getMainActivity(){
+        return (MainActivity)context;
+    }
 }

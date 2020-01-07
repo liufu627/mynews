@@ -2,6 +2,7 @@ package alfredfliu.app.mynews;
 
 import android.app.Application;
 
+import com.android.volley.Cache;
 import com.android.volley.toolbox.Volley;
 
 import org.xutils.x;
@@ -18,5 +19,6 @@ public class MyNewsApplication extends Application {
 
         x.Ext.setDebug(true);
         x.Ext.init(this);
+        alfredfliu.app.mynews.util.Cache.setApplicationContext(this);
     }
 }

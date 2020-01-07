@@ -29,6 +29,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/StyledIndicators" />
+        <activity android:name=".ui.NewsDetailActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     </application>
 
