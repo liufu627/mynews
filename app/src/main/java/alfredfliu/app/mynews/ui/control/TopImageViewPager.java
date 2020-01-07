@@ -21,25 +21,15 @@ public class TopImageViewPager extends ViewPager {
     float downX=0;
     float downY=0;
     int cycleStep=0;
-    final MyHandler handler=new MyHandler();
-    public class MyHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            int index = (TopImageViewPager.this.getCurrentItem() + 1) % TopImageViewPager.this.getAdapter().getCount();
-            TopImageViewPager.this.setCurrentItem(index, true);
-            MyLog.D("handleMessage",cycleStep);
-
-            handler.postDelayed(new MyRunnable(), cycleStep);
-        }
-    }
-    public class MyRunnable implements Runnable{
+    final Handler handler=new Handler();
+    final Runnable run = new Runnable() {
         @Override
         public void run() {
-            MyLog.D("sendEmptyMessage",cycleStep);
-            handler.sendEmptyMessage(0);
+            int index = (TopImageViewPager.this.getCurrentItem() + 1) % TopImageViewPager.this.getAdapter().getCount();
+            TopImageViewPager.this.setCurrentItem(index, true);
+            handler.postDelayed(run,cycleStep);
         }
-    }
+    };
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -69,7 +59,7 @@ public class TopImageViewPager extends ViewPager {
                 }
                 break;
             case MotionEvent.ACTION_UP: {
-                handler.postDelayed(new MyRunnable(),cycleStep);
+                handler.postDelayed(run,cycleStep);
                 break;
             }
             default:break;
@@ -83,6 +73,6 @@ public class TopImageViewPager extends ViewPager {
         this.cycleStep  =cycleStep;
 
         handler.removeCallbacksAndMessages(null);
-        handler.postDelayed(new MyRunnable(),cycleStep);
+        handler.postDelayed(run,cycleStep);
     }
 }
