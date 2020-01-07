@@ -38,12 +38,10 @@ import lombok.var;
 
 public class RefreshListView extends ListView implements Updatable {
 
-
     private final View footerView;
     @Getter
     MyCategory.DataBean.NewsBean Bean;
     private alfredfliu.app.mynews.data.NewsData newsData;
-
     private ArrayList<ImageView> listView;
     private int bottom;
     private int right;
@@ -53,10 +51,7 @@ public class RefreshListView extends ListView implements Updatable {
     private int[] origial_outLocation = new int[2];
     private float downY = -1;
     private float downX;
-
     private NewsListAdapter newsListAdapter;
-
-
     private View headerView;
     private LinearLayout ll_loading;
     private ImageView img_loading;
@@ -82,7 +77,6 @@ public class RefreshListView extends ListView implements Updatable {
     public RefreshListView(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr,0);
     }
-
     public RefreshListView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
@@ -156,6 +150,7 @@ public class RefreshListView extends ListView implements Updatable {
                 MyLog.D("OnPageSelected",layoutParams.leftMargin );
 
                 iv_red_point.setLayoutParams(layoutParams);
+
             }
 
             @Override
@@ -292,7 +287,7 @@ public class RefreshListView extends ListView implements Updatable {
             try {
                 NewsData newsDataMore = (NewsData) data;
 
-                if (newsDataMore.getData() == null || newsDataMore.getData().getNews() == null)
+                if (newsDataMore == null || newsDataMore.getData() == null || newsDataMore.getData().getNews() == null)
                     return;
 
                 for (var item : newsDataMore.getData().getNews()) {
@@ -306,6 +301,11 @@ public class RefreshListView extends ListView implements Updatable {
                 MyLog.D("已加载更多");
             }
         }
+
+        TopImageCycle();
+    }
+    public void TopImageCycle(){
+        vp_Gallery.startCyclePic(2000);
     }
 
     public String getUrl(int position) {

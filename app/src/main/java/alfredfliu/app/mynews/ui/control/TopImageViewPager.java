@@ -2,9 +2,11 @@ package alfredfliu.app.mynews.ui.control;
 
 import android.content.Context;
 import androidx.viewpager.widget.ViewPager;
+
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-
 import alfredfliu.app.mynews.util.MyLog;
 
 public class TopImageViewPager extends ViewPager {
@@ -18,6 +20,26 @@ public class TopImageViewPager extends ViewPager {
     }
     float downX=0;
     float downY=0;
+    int cycleStep=0;
+    final MyHandler handler=new MyHandler();
+    public class MyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int index = (TopImageViewPager.this.getCurrentItem() + 1) % TopImageViewPager.this.getAdapter().getCount();
+            TopImageViewPager.this.setCurrentItem(index, true);
+            MyLog.D("handleMessage",cycleStep);
+
+            handler.postDelayed(new MyRunnable(), cycleStep);
+        }
+    }
+    public class MyRunnable implements Runnable{
+        @Override
+        public void run() {
+            MyLog.D("sendEmptyMessage",cycleStep);
+            handler.sendEmptyMessage(0);
+        }
+    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -26,6 +48,7 @@ public class TopImageViewPager extends ViewPager {
                 getParent().requestDisallowInterceptTouchEvent(true);
                 downX= ev.getX();
                 downY = ev.getY();
+                handler.removeCallbacksAndMessages(null);
                 break;
             case MotionEvent.ACTION_MOVE:
                 float distanceX= ev.getX() -downX ;
@@ -45,9 +68,21 @@ public class TopImageViewPager extends ViewPager {
                     getParent().requestDisallowInterceptTouchEvent(true);
                 }
                 break;
-            case MotionEvent.ACTION_UP:break;
+            case MotionEvent.ACTION_UP: {
+                handler.postDelayed(new MyRunnable(),cycleStep);
+                break;
+            }
             default:break;
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    public void startCyclePic(int cycleStep) {
+        if( cycleStep<500 || ( this.getAdapter()!=null && this.getAdapter().getCount() <2 ))
+            return;
+        this.cycleStep  =cycleStep;
+
+        handler.removeCallbacksAndMessages(null);
+        handler.postDelayed(new MyRunnable(),cycleStep);
     }
 }

@@ -51,7 +51,7 @@ public class DefaultNewsTypeChildPage extends BasePage {
      */
     @Override
     public void UpdateView(final LoadWay way, Class<?> classInfo, Object data) {
-        if (way == LoadWay.Load && loaded) return;
+        if (way == LoadWay.Load && loaded) { lv_newsItems.TopImageCycle(); return;}
         if (data == null || !(data instanceof MyCategory.DataBean.NewsBean))
             return;
 
